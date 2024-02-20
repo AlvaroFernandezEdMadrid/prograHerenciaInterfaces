@@ -6,12 +6,10 @@ public class Rectangulo extends Figura {
 	
 	private int base, altura;
 
-	
 	public Rectangulo(String nombre, int x, int y, 
 			int color,float grosor, int base, int altura) {
 		
 		super (nombre, x, y, color,grosor);
-		
 		setBase (base);
 		setAltura (altura);
 	}
@@ -50,8 +48,6 @@ public class Rectangulo extends Figura {
 	public void setAltura(int altura) {
 		this.altura = altura <= 0 ? 1 : altura;
 	}
-
-	
 	
 	@Override
 	public String toString() {
@@ -60,14 +56,15 @@ public class Rectangulo extends Figura {
 				", toString()=" + super.toString() + "]";
 	}
 
+	@Override
 	public void leerDatos ()
 	{
-
 		super.leerDatos ();
 		setBase (Teclado.leerInt("\nbase"));
 		setAltura (Teclado.leerInt("\naltura"));
 	}
 	
+	@Override
 	public float getPerimetro ()
 	{
 		return 2 *(base + altura);

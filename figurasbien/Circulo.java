@@ -6,7 +6,6 @@ public class Circulo extends Figura {
 
 	private int radio;
 
-	
 	public Circulo(String nombre, int x, int y, 
 			int color,float grosor, int radio) {
 		
@@ -27,7 +26,6 @@ public class Circulo extends Figura {
 		
 		this (nombre, x,y,color,grosor, 0);
 	}
-
 	
 	public int getRadio() {
 		return radio;
@@ -37,17 +35,14 @@ public class Circulo extends Figura {
 		this.radio = radio <= 0 ? 1: radio;
 	}
 
-	
+	@Override
 	public void leerDatos ()
 	{
-		
 		super.leerDatos();
 
-		setRadio (Teclado.leerInt("\nradio"));
+		setRadio (Teclado.leerInt("\nRadio"));
 		
 	}
-	
-	
 	
 	@Override
 	public String toString() {
@@ -55,6 +50,7 @@ public class Circulo extends Figura {
 				", toString()=" + super.toString() + "]";
 	}
 
+	@Override
 	public float getPerimetro ()
 	{
 		return (float) (2 *Math.PI * radio);

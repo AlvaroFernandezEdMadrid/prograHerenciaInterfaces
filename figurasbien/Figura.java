@@ -2,10 +2,11 @@ package figurasbien;
 
 import daw.com.Teclado;
 
-public class Figura {
+public abstract class Figura {
 	private String nombre;
 	private int x, y, color;
 	private float grosor;
+	
 	public Figura(String nombre, int x, int y, int color, float grosor) {
 		this.nombre = nombre;
 		this.x = x;
@@ -78,7 +79,7 @@ public class Figura {
 		y = Teclado.leerInt("\ny");
 		setColor (Teclado.leerInt("\ncolor"));
 		setGrosor (Teclado.leerFloat("\ngrosor"));
-		
 	}
 
+	public abstract float getPerimetro();
 }

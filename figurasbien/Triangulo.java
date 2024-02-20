@@ -55,12 +55,17 @@ public class Triangulo extends Figura {
 				+ super.toString() + "]";
 	}
 	
+	@Override
 	public void leerDatos ()
 	{
 		super.leerDatos();
 		setLado1(Teclado.leerInt("\nlado1"));
 		setLado2(Teclado.leerInt("\nlado2"));
 		setLado3(Teclado.leerInt("\nlado3"));
+	}
+	
+	public float getPerimetro() {
+		return lado1+lado2+lado3;
 	}
 	
 }

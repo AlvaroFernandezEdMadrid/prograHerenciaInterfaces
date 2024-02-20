@@ -6,7 +6,7 @@ public class AppFiguras {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Rectangulo r,r2;
+		Rectangulo r;
 		Circulo c;
 		Figura f1,f2;
 		
@@ -16,8 +16,6 @@ public class AppFiguras {
 		
 		r.leerDatos();
 		c.leerDatos();
-		
-		r2 = new Rectangulo (r);
 	
 		// El padre representa a cualquiera de los hijos
 		f1 = r;
@@ -26,9 +24,9 @@ public class AppFiguras {
 			
 		if (f1.getX() == f2.getX() &&
 				f1.getY() == f2.getY())
-			Pantalla.escribirString("\nson concÃ©ntricos");
+			Pantalla.escribirString("\nSon concentricos");
 		else 
-			Pantalla.escribirString("\nNO son concÃ©ntricos");
+			Pantalla.escribirString("\nNO son concentricos");
 	}
 
 }

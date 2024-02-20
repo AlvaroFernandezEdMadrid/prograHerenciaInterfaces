@@ -10,7 +10,7 @@ public class AppPolimorfismo {
 		Figura figuras[];
 		int cuantas, tipo;
 		
-		cuantas = Teclado.leerInt("\ncuÃ¡ntas?");
+		cuantas = Teclado.leerInt("\nCuantas?");
 		
 		figuras = new Figura[cuantas];
 		
@@ -37,11 +37,16 @@ public class AppPolimorfismo {
 		
 		
 		for (Figura f : figuras)
-			if (f instanceof Circulo)
+			if (f instanceof Circulo) {
 				Pantalla.escribirString("\n" + f);
+				Circulo c=(Circulo)f;		//Acceder a metodos del hijo
+				c.setRadio(25);
+			}
+				
 		
-		 // Mostrar un listado de figuras ordenado por perÃ­metro
-
+		 // Mostrar un listado de perimetros de figuras. 
+		for(Figura f: figuras)
+			System.out.println("\nPerimetro "+f.getPerimetro());
 	}
 
 }
