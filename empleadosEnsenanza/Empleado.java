@@ -95,7 +95,7 @@ public abstract class Empleado {
 	}
 	
 	public boolean equals(Empleado otro) {
-		return this.dni.equalsIgnoreCase(otro.dni);
+		return dni.equalsIgnoreCase(otro.dni);
 	}
 	
 	public abstract float getSueldoNeto();
