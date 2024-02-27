@@ -1,46 +1,61 @@
 package garaje;
 
+import daw.com.Pantalla;
 import daw.com.Teclado;
 
-public class Moto extends Vehiculo {
-	private boolean asegurada;
 
-	public Moto(int potencia, String matricula, boolean asegurada) {
-		super(potencia, matricula);
-		this.asegurada = asegurada;
-	}
+public class Moto extends Vehiculo {
 	
-	public Moto(String matricula) {
-		this(1, matricula, false);
-	}
-	
+	private boolean antirrobo;
+
 	public Moto() {
 		this("");
 	}
-
-	public boolean isAsegurada() {
-		return asegurada;
+	
+	public Moto (String matricula)
+	{
+		this (1,matricula, false);
 	}
 
-	public void setAsegurada(boolean asegurada) {
-		this.asegurada = asegurada;
+	public Moto (Moto original)
+	{
+		super(original);
+		this.antirrobo = original.antirrobo;
+	}
+	
+	public Moto(int potencia, String matricula, boolean antirrobo) {
+		super(potencia, matricula);
+		// TODO Auto-generated constructor stub
+		this.antirrobo = antirrobo;
+	}
+
+	public boolean isAntirrobo() {
+		return antirrobo;
+	}
+
+	public void setAntirrobo(boolean antirrobo) {
+		this.antirrobo = antirrobo;
+	}
+
+	@Override
+	public void leerOtrosDatos()
+	{
+		super.leerOtrosDatos();
+		antirrobo = Teclado.leerString("\nTiene antirrobo (S/N)").equalsIgnoreCase("s");
+		
 	}
 	
 	@Override
-	public void leerOtrosDatos() {
-		super.leerOtrosDatos();
-		setAsegurada(Teclado.leerString("Esta asegurada? (S/N)").equalsIgnoreCase("s"));
+	public void mostrarDatos()
+	{
+		super.mostrarDatos();
+		Pantalla.escribirString ("\nAntirrobo :" + antirrobo);
 	}
 
 	@Override
-	public String toString() {
-		return "Moto [asegurada=" + asegurada + super.toString() + "]";
-	}
-
-	@Override
-	public float getCuota() {
+	public float getCouta() {
 		// TODO Auto-generated method stub
-		//potencia *2
-		return this.getPotencia()*2;
+		return getPotencia() * 2;
 	}
+
 }

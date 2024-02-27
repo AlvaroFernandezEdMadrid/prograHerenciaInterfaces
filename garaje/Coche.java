@@ -1,55 +1,68 @@
 package garaje;
 
-import Libreria.Libreria;
+import daw.com.Pantalla;
+import daw.com.Teclado;
+
 
 public class Coche extends Vehiculo {
-	private int nPlazas;
+	
+	private int numplazas;
+	
 
-	public Coche(int potencia, String matricula, int nPlazas) {
-		super(potencia, matricula);
-		setnPlazas(nPlazas);
-	}
-	
-	public Coche (String matricula) {
-		super(matricula);
-		setnPlazas(1);
-	}
-	
 	public Coche() {
 		this("");
+		// TODO Auto-generated constructor stub
 	}
 
-	public int getnPlazas() {
-		return nPlazas;
-	}
 
-	public void setnPlazas(int nPlazas) {
-		if (nPlazas<1) {
-			nPlazas=1;
-		}
-		this.nPlazas = nPlazas;
+	public Coche (String matricula)
+	{
+		this (1,matricula,1);
+	
+	}
+	public Coche(int potencia, String matricula, int numplazas) {
+		super(potencia, matricula);
+		// TODO Auto-generated constructor stub
+		setNumplazas(numplazas);
 	}
 	
+	public Coche (Coche original)
+	{
+		super (original);
+		this.numplazas = original.numplazas;
+	}
+
+	public int getNumplazas() {
+		return numplazas;
+	}
+
+
+	public void setNumplazas(int numplazas) {
+		if (numplazas < 1)
+			numplazas = 1;
+		else if (numplazas > 8)
+			numplazas = 8;
+		
+		this.numplazas = numplazas;
+	}
+
 	@Override
-	public void leerOtrosDatos(){
+	public void mostrarDatos()
+	{
+		super.mostrarDatos();
+		Pantalla.escribirInt("\nNÂº plazas", numplazas);
+	}
+
+	@Override
+	public void leerOtrosDatos()
+	{
 		super.leerOtrosDatos();
-		setnPlazas(Libreria.leerEntreLimites(1, 9, "Numero de plazas: "));
+		setNumplazas (Teclado.leerInt("Numero de plazas"));
 	}
-
 	@Override
-	public String toString() {
-		return "Coche [nPlazas=" + nPlazas + super.toString() + "]";
-	}
-
-	@Override
-	public float getCuota() {
+	public float getCouta() {
 		// TODO Auto-generated method stub
-		//multi potencia *nplaza
-		
-		return this.getPotencia()*nPlazas;
-		
+		return getPotencia()* numplazas;
 	}
-	
-	
-	
+
 }
