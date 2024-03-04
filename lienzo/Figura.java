@@ -1,14 +1,11 @@
 package lienzo;
 
-import java.util.Objects;
-
 import daw.com.Teclado;
 
 public abstract class Figura {
 	private String nombre;
 	private int x, y, color;
 	private float grosor;
-	
 	public Figura(String nombre, int x, int y, int color, float grosor) {
 		this.nombre = nombre;
 		this.x = x;
@@ -74,21 +71,29 @@ public abstract class Figura {
 		return "Figura [nombre=" + nombre + ", x=" + x + ", y=" + y + ", color=" + color + ", grosor=" + grosor + "]";
 	}
 	
-	public void leerDatos ()
+	public void leerOtrosDatos ()
 	{
-		nombre = Teclado.leerString("\nnombre");
+		
 		x = Teclado.leerInt("\nx");
 		y = Teclado.leerInt("\ny");
 		setColor (Teclado.leerInt("\ncolor"));
 		setGrosor (Teclado.leerFloat("\ngrosor"));
 	}
 	
-	
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(nombre);
+	public void leerClave ()
+	{
+		nombre = Teclado.leerString("\nnombre");
 	}
+	
+	public void leerDatos ()
+	{
+		leerClave ();
+		leerOtrosDatos ();
+	}
+	
+	public abstract float getPerimetro ();
+	
+	public abstract float getArea ();
 
 	@Override
 	public boolean equals(Object obj) {
@@ -96,12 +101,19 @@ public abstract class Figura {
 			return true;
 		if (obj == null)
 			return false;
-		/*if (getClass() != obj.getClass())
-			return false;*/
+		/*
+		if (getClass() != obj.getClass())
+			return false;
+		*/
 		Figura other = (Figura) obj;
-		return Objects.equals(nombre, other.nombre);
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		return true;
 	}
+	
+	
 
-	public abstract float getPerimetro();
-	public abstract float getArea();
 }

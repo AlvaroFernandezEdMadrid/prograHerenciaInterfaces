@@ -2,151 +2,181 @@ package lienzo;
 
 import java.util.ArrayList;
 
+import daw.com.Teclado;
+import Libreria.Libreria;
+
 public class Lienzo {
 	private String nombre;
-	private int ancho, alto;
+	private int alto;
+	private int ancho;
 	private ArrayList<Figura> figuras;
-
-	public Lienzo(String nombre, int ancho, int alto, ArrayList<Figura> figuras) {
+	
+	public Lienzo(String nombre, int alto, int ancho, ArrayList<Figura> figuras) {
+		
 		this.nombre = nombre;
-		setAncho(ancho);
-		setAlto(alto);
-		figuras=new ArrayList<Figura>();
+		setAlto (alto);
+		setAncho (ancho);
+		setFiguras (figuras);
+	}
+	
+	public Lienzo (String nombre)
+	{
+		this (nombre, 1, 1, new ArrayList<>());
 	}
 
-	public Lienzo(String nombre) {
-		this(nombre, 0,0,new ArrayList<Figura>());
+	public Lienzo ()
+	{
+		this ("");
 	}
-
-	public Lienzo() {
-		this("");
+	
+	public Lienzo (Lienzo original)
+	{
+		this (original.nombre, original.ancho,
+				original.alto, original.figuras);
 	}
 
 	public String getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public int getAlto() {
+		return alto;
 	}
 
 	public int getAncho() {
 		return ancho;
 	}
 
-	public void setAncho(int ancho) {
-		if (ancho<0) {
-			ancho=0;
-		}
-		this.ancho = ancho;
-	}
-
-	public int getAlto() {
-		return alto;
-	}
-
-	public void setAlto(int alto) {
-		if (alto<0) {
-			alto=0;
-		}
-		this.alto = alto;
-	}
-
 	public ArrayList<Figura> getFiguras() {
-		ArrayList<Figura> copia;
-
-		copia=new ArrayList<Figura>();
-
-		for (int i = 0; i < figuras.size(); i++) {
-			if (figuras.get(i) instanceof Circulo c) { //Pattern matching, c es referencia
-				copia.set(i, new Circulo(c));
-			}else if (figuras.get(i) instanceof Rectangulo r) {
-				copia.set(i, new Rectangulo(r));
-			}
-		}
-
+		ArrayList<Figura> copia = new ArrayList<>();
+		
+		for (Figura f : figuras)
+			copia.add(crearCopiaFigura(f));
+		
 		return copia;
 	}
 
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setAlto(int alto) {
+		if (alto < 1)
+			alto = 1;
+		this.alto = alto;
+	}
+
+	public void setAncho(int ancho) {
+		if (ancho < 1)
+			ancho = 1;
+		this.ancho = ancho;
+	}
+
 	public void setFiguras(ArrayList<Figura> figuras) {
-
-		ArrayList<Figura> copia;
-		int areaLienzo=alto*ancho;
-
-
-		copia=new ArrayList<Figura>();
-
-		for (int i = 0; i < figuras.size(); i++) {
-			if (figuras.get(i).getArea()<=(areaLienzo-calcularAreaOcupada(copia))&&!copia.contains(figuras.get(i))) { //Que quepan y no esten repetidas
-				if (figuras.get(i) instanceof Circulo c) { //Pattern matching, c es referencia
-					copia.set(i, new Circulo(c));
-				}else if (figuras.get(i) instanceof Rectangulo r) {
-					copia.set(i, new Rectangulo(r));
-				}
-			}else
-				System.out.println("No cabe mas");
-		}
-
-		this.figuras = copia;
-	}
-
-	public boolean addFigura(Figura nueva) {
-		//Se puede anadir si el area de las figuras que 
-		//hay en el liezo no supera el area del propio lienzo
-		Figura copia;
-		boolean exito=false;
-		int areaLienzo=alto*ancho;
-		int areaOcupada=calcularAreaOcupada(figuras);
-
-		if (nueva instanceof Circulo c) { //Pattern matching
-			copia=new Circulo(c);
-		}else {
-			copia=new Rectangulo((Rectangulo)nueva);//Cast cutre
-		}
-
-		if (areaOcupada<areaLienzo&&copia.getArea()<=(areaLienzo-areaOcupada)) {
-			if (!figuras.contains(copia)) {
-				figuras.add(nueva);
-				exito=true;
-			}
-
-		}
-
-		return exito;
-	}
-
-	private int calcularAreaOcupada(ArrayList<Figura> figuras2) {
-		int total=0;
-
-		for (int i = 0; i < figuras.size(); i++) {
-			total+=figuras.get(i).getArea();
-		}
-
-		return total;
-	}
-
-	public boolean eliminarFigura(String nombre) {
-		boolean exito=false;
 		
-		for (int i = 0; i < figuras.size()&&!exito; i++) {
-			if (figuras.get(i).getNombre().equalsIgnoreCase(nombre)) {
-				figuras.remove(i);
-				exito=true;
-			}
+		this.figuras = new ArrayList<>();
+		
+		for (Figura f : figuras)
+			//this.figuras.add(crearCopiaFigura(f));
+			addFigura (f);
+			
+	}
+	
+	public static Figura crearCopiaFigura (Figura f)
+	{
+		/*
+		return 	switch (f){
+		case Rectangulo r -> new Rectangulo(r);
+		case Circulo c -> new Circulo(c);
+		default -> f;
+		};
+		*/
+		
+		Figura copia;
+		
+		if (f instanceof Rectangulo r) // pattern matching
+			copia = new Rectangulo(r);   
+		else if (f instanceof Circulo c)
+			copia = new Circulo(c);
+		else
+			copia = f;
+		
+		return copia;
+	}
+	
+	public float getArea ()
+	{
+		return alto * ancho;
+	}
+	
+	public float getAreaFiguras ()
+	{
+		float area = 0;
+		
+		for (Figura f : figuras)
+			area += f.getArea();
+		
+		return area;
+	}
+	
+	public boolean addFigura (Figura f)
+	{
+		boolean exito = false;
+		
+		if (!figuras.contains(f) &&
+				getAreaFiguras () + f.getArea() <= 
+				getArea() )
+		{
+			exito = true;
+			figuras.add(crearCopiaFigura(f));
 		}
 		
 		return exito;
 	}
 	
-	public int getFiguraMayor() {
-		int donde=0;
+	public void leerDatos ()
+	{
+		nombre = Teclado.leerString("nombre lienzo");
+		alto = Libreria.leerEnteroPositivo("\nalto");
+		ancho = Libreria.leerEnteroPositivo("\nancho");
+	}
+	public boolean estaLLena ()
+	{
+		return getArea() == getAreaFiguras();
+	}
+	
+	public  Figura getFigura (String nombreFigura)
+	{
+		Figura figura; 
+		int cual;
 		
-		for (int i = 0; i < figuras.size(); i++) {
-			if (figuras.get(i).getArea()>figuras.get(donde).getArea()) {
-				donde=i;
-			}
+		figura =  new Rectangulo (nombreFigura);//chapuza
+		
+		cual = figuras.indexOf(figura);
+		
+		if (cual >= 0)
+			figura = crearCopiaFigura(figuras.get(cual));
+		else
+			figura = null;
+		
+		return figura;
+	}
+	
+	public boolean eliminarFigura (String nombreFigura)
+	{
+		boolean exito = false;
+		Figura f;
+		
+		f = getFigura (nombreFigura);
+		
+		if (f != null)
+		{
+			exito = true;
+			figuras.remove(f);
 		}
 		
-		return donde;
+		return exito;
 	}
+	
+
 }

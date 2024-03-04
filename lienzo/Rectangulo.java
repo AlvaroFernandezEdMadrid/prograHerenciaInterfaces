@@ -26,11 +26,11 @@ public class Rectangulo extends Figura {
 		this (nombre, x,y,color,grosor, 0, 0);
 	}
 
-	public Rectangulo (Rectangulo original)
+	public Rectangulo (Rectangulo og)
 	{
-		super (original);
-		this.base = original.base;
-		this.altura = original.altura;
+		super (og);
+		this.base = og.base;
+		this.altura = og.altura;
 	}
 	
 	public int getBase() {
@@ -60,8 +60,8 @@ public class Rectangulo extends Figura {
 	public void leerDatos ()
 	{
 		super.leerDatos ();
-		setBase (Teclado.leerInt("\nbase"));
-		setAltura (Teclado.leerInt("\naltura"));
+		setBase (Teclado.leerInt("\nBase"));
+		setAltura (Teclado.leerInt("\nAltura"));
 	}
 	
 	@Override
