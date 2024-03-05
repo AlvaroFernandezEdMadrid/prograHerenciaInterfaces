@@ -1,71 +1,128 @@
 package inmobiliaria;
 
+import java.util.Objects;
+
+import daw.com.Teclado;
+
 public abstract class Vivienda {
 	private Direccion direccion;
-	private int metrosCua;
+	private int superficie;
 	private String descripcion;
-	private float precio;
+	private float pvp;
 	
-	public Vivienda(Direccion direccion, int metrosCua, String descripcion, float precio) {
-		setDireccion(direccion);
-		setMetrosCua(metrosCua);
+	
+	public Vivienda(Direccion direccion, int superficie, String descripcion, float pvp) {
+
+		setDireccion (direccion);
+		setSuperficie (superficie);
 		this.descripcion = descripcion;
-		setPrecio(precio);
+		setPvp (pvp);
 	}
 
-	public Vivienda(Direccion direccion) {
-		this(direccion,0,"",0);
+	public Vivienda ()
+	{
+		this (new Direccion(), 0, "",0);
 	}
-
-	public Vivienda() {
-		this(null);
+	
+	public Vivienda (Direccion direccion)
+	{
+		this (direccion, 0, "", 0);
 	}
-
+	
+	public Vivienda (Vivienda original)
+	{
+		this (original.direccion, original.superficie,
+				original.descripcion, original.pvp);
+	}
+	
 	public Direccion getDireccion() {
-		Direccion copia;
-		
-		copia=new Direccion(direccion);
-		
-		return copia;
+		return new Direccion(direccion);
 	}
+
 
 	public void setDireccion(Direccion direccion) {
-		// copia dura
-		this.direccion = direccion != null? 
-					new Direccion (direccion):
-					new Direccion();
+		if (direccion != null)
+			this.direccion = new Direccion(direccion);
 	}
 
-	public int getMetrosCua() {
-		return metrosCua;
+
+	public int getSuperficie() {
+		return superficie;
 	}
 
-	public void setMetrosCua(int metrosCua) {
-		if (metrosCua<0) {
-			metrosCua=0;
-		}
-		this.metrosCua = metrosCua;
+
+	public void setSuperficie(int superficie) {
+		if (superficie < 0)
+			superficie = 0;
+		
+		this.superficie = superficie;
 	}
+
 
 	public String getDescripcion() {
 		return descripcion;
 	}
 
+
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
-	public float getPrecio() {
-		return precio;
+
+	public float getPvp() {
+		return pvp;
 	}
 
-	public void setPrecio(float precio) {
-		if (precio<0) {
-			precio=0;
-		}
-		this.precio = precio;
+
+	public void setPvp(float pvp) {
+		if (pvp < 0)
+			pvp = 0;
+		this.pvp = pvp;
 	}
 	
-	public abstract float getComision();
 	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+	
+		Vivienda other = (Vivienda) obj;
+		return Objects.equals(direccion, other.direccion);
+	}
+
+	public void leerClave ()
+	{
+		direccion.leerDatos();
+		
+	}
+	
+	public void leerOtroDatos ()
+	{
+		setSuperficie (Teclado.leerInt("superficie"));
+		this.descripcion = Teclado.leerString("descripcion");
+		setPvp (Teclado.leerFloat("pvp"));
+	}
+	
+	public void leerDatos ()
+	{
+		leerClave();
+		leerOtroDatos();
+	}
+	
+	public float getPrecioFinal ()
+	{
+		return pvp + getComision ();
+	}
+	
+	abstract public float getComision ();
+
+	@Override
+	public String toString() {
+		return "Vivienda [direccion=" + direccion + ", superficie=" + superficie + ", descripcion=" + descripcion
+				+ ", pvp=" + pvp + ", precio final = " + getPrecioFinal() + "]";
+	}
+
 }
