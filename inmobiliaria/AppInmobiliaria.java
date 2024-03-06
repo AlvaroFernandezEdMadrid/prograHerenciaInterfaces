@@ -1,5 +1,7 @@
 package inmobiliaria;
 
+import java.time.LocalDate;
+
 import daw.com.Pantalla;
 import daw.com.Teclado;
 
@@ -16,6 +18,10 @@ public class AppInmobiliaria extends AppConMenu {
 		addOpcion("Eliminar Vivienda");
 		addOpcion("Mostrar Vivienda");
 		addOpcion("Mostrar Viviendas");
+		addOpcion("Insertar Cliente");
+		addOpcion("Mostrar todos los clientes");
+		addOpcion("Anotar Visita");
+		addOpcion("Mostrar visitas de un cliente");
 		
 		// Crear objeto inmobiliaria
 		
@@ -38,22 +44,76 @@ public class AppInmobiliaria extends AppConMenu {
 		switch (opc)
 		{
 			case 1:
-				altaVivienda ();
+				altaVivienda();
 				break;
 			case 2:
-				bajaVivienda ();
+				bajaVivienda();
 				break;
 			case 3:
-				mostrarVivienda ();
+				mostrarVivienda();
 				break;
 			case 4:
-				mostrarViviendas ();
+				mostrarViviendas();
 				break;
 			case 5:
+				annadirCliente();
+				break;
+			case 6:
+				mostrarClientes();
+				break;
+			case 7:
+				anotarVisita();
+				break;
+			case 8:
+				
+				break;
+			case 9:
 				salir ();
 		}
 	}
 	
+	private void anotarVisita() {
+		Cliente c;
+		Direccion d;
+		String impresion, dni;
+		Visita v;
+		//Comprobar que esta el cliente
+		dni=Teclado.leerString("DNI:");
+		c=new Cliente(dni);
+		
+		if (inmboliaria.getClientes().contains(c)) {
+			d=new Direccion();
+			d.leerDatos();
+			if (inmboliaria.getVivienda(d)!=null) {
+				impresion=Teclado.leerString("Cual fue tu impresion?:");
+				v=new Visita(LocalDate.now(), inmboliaria.getVivienda(d), impresion, inmboliaria.getClientes().get(inmboliaria.buscarCliente(dni)));
+				inmboliaria.getVisitas().add(v);
+			}
+		}
+		
+		
+	}
+
+	private void mostrarClientes() {
+		inmboliaria.mostrarClientes();
+	}
+
+	private void annadirCliente() {
+		Cliente c;
+		
+		c=new Cliente();
+		
+		do {
+			c.leerClave();
+		} while (inmboliaria.getClientes().contains(c));
+		c.leerOtrosDatos();
+		
+		inmboliaria.addCliente(c);
+		
+	}
+
+
+
 	public void mostrarViviendas() {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < inmboliaria.getNViviendas(); i++)

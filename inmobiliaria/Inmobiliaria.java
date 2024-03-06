@@ -12,7 +12,7 @@ public class Inmobiliaria {
 	public Inmobiliaria ()
 	{
 		nombre ="";
-		viviendas = new ArrayList<>();
+		viviendas = new ArrayList<Vivienda>();
 		visitas=new ArrayList<Visita>();
 		clientes=new ArrayList<Cliente>();
 	}
@@ -20,7 +20,9 @@ public class Inmobiliaria {
 	public Inmobiliaria (String nombre)
 	{
 		this.nombre = nombre;
-		viviendas = new ArrayList<>();
+		viviendas = new ArrayList<Vivienda>();
+		visitas=new ArrayList<Visita>();
+		clientes=new ArrayList<Cliente>();
 	}
 	
 	public Inmobiliaria (Inmobiliaria original)
@@ -31,6 +33,12 @@ public class Inmobiliaria {
 		
 		for (Vivienda v: original.viviendas)
 			viviendas.add(v);
+		
+		for (Visita vv: original.visitas)
+			visitas.add(vv);
+		
+		for (Cliente c: original.clientes)
+			clientes.add(c);
 		/*
 		for (int i = 0; i < original.viviendas.size(); i++)
 		{
@@ -87,6 +95,34 @@ public class Inmobiliaria {
 		this.nombre = nombre;
 	}
 	
+	public ArrayList<Visita> getVisitas() {
+		return visitas;
+	}
+
+	public void setVisitas(ArrayList<Visita> visitas) {
+		this.visitas = visitas;
+	}
+
+	public ArrayList<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(ArrayList<Cliente> clientes) {
+		this.clientes = clientes;
+	}
+	
+	public int buscarCliente(String dni) {
+		int donde=-1;
+		
+		for (int i = 0; i < clientes.size()&&donde==-1; i++) {
+			if (clientes.get(i).getDni().equalsIgnoreCase(dni)) {
+				donde=clientes.indexOf(clientes.get(i));
+			}
+		}
+		
+		return donde;
+	}
+
 	public boolean insertarVivienda (Vivienda v)
 	{
 		boolean exito = false;
@@ -98,6 +134,30 @@ public class Inmobiliaria {
 		}
 		
 		return exito;
+	}
+	
+	public boolean addCliente(Cliente c) {
+		boolean exito=false;
+		if (!clientes.contains(c)&&c!=null) {
+			clientes.add(c);
+			exito=true;
+		}
+		return exito;
+	}
+	
+	public boolean removeCliente(Cliente c) {
+		boolean exito=false;
+		if (clientes.contains(c)) {
+			clientes.remove(c);
+			exito=true;
+		}
+		return exito;
+	}
+	
+	public void mostrarClientes() {
+		for(Cliente c:clientes) {
+			System.out.println(c);
+		}
 	}
 	
 	public boolean eliminarVivienda (Direccion direccion)

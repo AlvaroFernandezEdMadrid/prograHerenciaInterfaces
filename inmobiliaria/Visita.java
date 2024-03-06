@@ -56,6 +56,12 @@ public class Visita {
 	}
 	
 	@Override
+	public String toString() {
+		return "Visita [fechaVisita=" + fechaVisita + ", vivienda=" + vivienda + ", impresion=" + impresion
+				+ ", cliente=" + cliente.getDni() + "]";
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
