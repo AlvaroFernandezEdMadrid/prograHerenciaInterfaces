@@ -1,30 +1,34 @@
 package inmobiliaria;
 
-import java.util.Objects;
-
 import daw.com.Teclado;
 
 public class Cliente {
-	private String nombre;
 	private String dni;
-	private float Presupuesto;
+	private String nombre;
+	private float cantidad;
 	
-	public Cliente(String nombre, String dni, float Presupuesto) {
-		this.nombre = nombre;
+	public Cliente(String dni, String nombre, float cantidad) {
+		
 		this.dni = dni;
-		setPresupuesto(Presupuesto);
+		this.nombre = nombre;
+		setCantidad (cantidad);
 	}
-	
+
 	public Cliente(String dni) {
-		this("",dni,0);
+		this (dni, "", 0);
 	}
 	
-	public Cliente() {
-		this("");
+	public Cliente ()
+	{
+		this ("");
 	}
 	
-	public Cliente(Cliente og) {
-		this(og.nombre,og.dni,og.Presupuesto);
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 
 	public String getNombre() {
@@ -35,24 +39,39 @@ public class Cliente {
 		this.nombre = nombre;
 	}
 
-	public String getDni() {
-		return dni;
+	public float getCantidad() {
+		return cantidad;
 	}
 
-	public void setDni(String dni) {
-		this.dni = dni;
+	public void setCantidad(float cantidad) {
+		if (cantidad < 0)
+			cantidad = 0;
+		
+		this.cantidad = cantidad;
+	}
+	
+	public void leerClave ()
+	{
+		dni = Teclado.leerString("\ndni ");
+	}
+		
+	public void leerOtrosDatos ()
+	{
+		nombre = Teclado.leerString("nombre ");
+		setCantidad (Teclado.leerFloat("Cantidad a gastar "));
 	}
 
-	public float getPresupuesto() {
-		return Presupuesto;
+	public void leerDatos ()
+	{
+		leerClave ();
+		leerOtrosDatos ();
+	}
+	@Override
+	public String toString() {
+		return "Cliente [dni=" + dni + ", nombre=" + nombre + ", cantidad=" + cantidad + "]";
 	}
 
-	public void setPresupuesto(float Presupuesto) {
-		if (Presupuesto<0) {
-			Presupuesto=0;
-		}
-		this.Presupuesto = Presupuesto;
-	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -60,29 +79,18 @@ public class Cliente {
 			return true;
 		if (obj == null)
 			return false;
-		/*if (getClass() != obj.getClass())
-			return false;*/
+		if (getClass() != obj.getClass())
+			return false;
 		Cliente other = (Cliente) obj;
-		return Objects.equals(dni, other.dni);
+		if (dni == null) {
+			if (other.dni != null)
+				return false;
+		} else if (!dni.equals(other.dni))
+			return false;
+		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Nombre=" + nombre + "\nDNI=" + dni + "\nPresupuesto=" + Presupuesto;
-	}
-	
-	public void leerDatos() {
-		leerClave();
-		leerOtrosDatos();
-	}
 
-	public void leerClave() {
-		setDni(Teclado.leerString("\nDNI:"));
-	}
 
-	public void leerOtrosDatos() {
-		setNombre(Teclado.leerString("\nNombre: "));
-		setPresupuesto(Teclado.leerFloat("\nPresupuesto: "));
-	}
-	
+
 }

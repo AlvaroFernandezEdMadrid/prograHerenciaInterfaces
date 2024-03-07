@@ -1,42 +1,42 @@
 package inmobiliaria;
 
 import java.time.LocalDate;
-import java.util.Objects;
+
+import daw.com.Teclado;
 
 public class Visita {
-	private LocalDate fechaVisita;
-	private Vivienda vivienda;
+	private LocalDate fecha;
 	private String impresion;
+	private Vivienda vivienda;
 	private Cliente cliente;
 	
-	public Visita(LocalDate fechaVisita, Vivienda vivienda, String impresion, Cliente cliente) {
-		setFechaVisita(fechaVisita);
-		this.vivienda = vivienda;
+	public Visita(LocalDate fecha, String impresion, Vivienda vivienda, Cliente cliente) {
+		
+		setFecha (fecha);
 		this.impresion = impresion;
+		this.vivienda = vivienda;
 		this.cliente = cliente;
 	}
+
+	public Visita ()
+	{
+		this (LocalDate.now(), "", null, null);
+	}
 	
-	public Visita() {
-		this(LocalDate.now(),new ViviendaLibre(),"",new Cliente());
+	public Visita (Vivienda vivienda, Cliente cliente)
+	{
+		this (LocalDate.now(),"", vivienda, cliente);
+		
 	}
 
-	public LocalDate getFechaVisita() {
-		return fechaVisita;
+	public LocalDate getFecha() {
+		return fecha;
 	}
 
-	public void setFechaVisita(LocalDate fechaVisita) {
-		if (fechaVisita.isAfter(LocalDate.now())) {
-			fechaVisita=LocalDate.now();
-		}
-		this.fechaVisita = fechaVisita;
-	}
-
-	public Vivienda getVivienda() {
-		return vivienda;
-	}
-
-	public void setVivienda(Vivienda vivienda) {
-		this.vivienda = vivienda;
+	public void setFecha(LocalDate fecha) {
+		if (fecha.isAfter(LocalDate.now()))
+			fecha = LocalDate.now();
+		this.fecha = fecha;
 	}
 
 	public String getImpresion() {
@@ -47,6 +47,14 @@ public class Visita {
 		this.impresion = impresion;
 	}
 
+	public Vivienda getVivienda() {
+		return vivienda;
+	}
+
+	public void setVivienda(Vivienda vivienda) {
+		this.vivienda = vivienda;
+	}
+
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -55,11 +63,21 @@ public class Visita {
 		this.cliente = cliente;
 	}
 	
+	public void leerDatos ()
+	{
+		fecha = LocalDate.parse(Teclado.leerString("\naaaa-mm-dd"));
+
+		impresion = Teclado.leerString("\nimpresiÃ³n cliente ");
+	}
+
 	@Override
 	public String toString() {
-		return "Visita [fechaVisita=" + fechaVisita + ", vivienda=" + vivienda + ", impresion=" + impresion
+		return "Visita [fecha=" + fecha + ", hora=" + impresion + 
+				", vivienda=" + vivienda.getDireccion()
 				+ ", cliente=" + cliente.getDni() + "]";
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -67,12 +85,28 @@ public class Visita {
 			return true;
 		if (obj == null)
 			return false;
-		/*if (getClass() != obj.getClass())
-			return false;*/
+		if (getClass() != obj.getClass())
+			return false;
 		Visita other = (Visita) obj;
-		return Objects.equals(cliente, other.cliente) && Objects.equals(fechaVisita, other.fechaVisita)
-				&& Objects.equals(impresion, other.impresion) && Objects.equals(vivienda, other.vivienda);
+		if (cliente == null) {
+			if (other.cliente != null)
+				return false;
+		} else if (!cliente.equals(other.cliente))
+			return false;
+		if (fecha == null) {
+			if (other.fecha != null)
+				return false;
+		} else if (!fecha.equals(other.fecha))
+			return false;
+		if (vivienda == null) {
+			if (other.vivienda != null)
+				return false;
+		} else if (!vivienda.equals(other.vivienda))
+			return false;
+		return true;
 	}
-	
-	
+
+
+
+
 }

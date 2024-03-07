@@ -4,25 +4,23 @@ import java.util.ArrayList;
 
 public class Inmobiliaria {
 	private ArrayList<Vivienda> viviendas;
-	private ArrayList<Visita> visitas;
 	private ArrayList<Cliente> clientes;
+	private ArrayList<Visita> visitas;
 	
 	private String nombre;
 	
 	public Inmobiliaria ()
 	{
-		nombre ="";
-		viviendas = new ArrayList<Vivienda>();
-		visitas=new ArrayList<Visita>();
-		clientes=new ArrayList<Cliente>();
+		this ("");
+		
 	}
 
 	public Inmobiliaria (String nombre)
 	{
 		this.nombre = nombre;
-		viviendas = new ArrayList<Vivienda>();
-		visitas=new ArrayList<Visita>();
-		clientes=new ArrayList<Cliente>();
+		viviendas = new ArrayList<>();
+		clientes = new ArrayList<>();
+		visitas = new ArrayList<>();
 	}
 	
 	public Inmobiliaria (Inmobiliaria original)
@@ -34,18 +32,8 @@ public class Inmobiliaria {
 		for (Vivienda v: original.viviendas)
 			viviendas.add(v);
 		
-		for (Visita vv: original.visitas)
-			visitas.add(vv);
-		
-		for (Cliente c: original.clientes)
-			clientes.add(c);
-		/*
-		for (int i = 0; i < original.viviendas.size(); i++)
-		{
-			Vivienda v = original.viviendas.get(i);
-			viviendas.add(v);
-		}*/
-		//original.viviendas.forEach(v -> viviendas.add(v));
+		clientes = new ArrayList<>(original.clientes);
+		visitas = new ArrayList<>(original.visitas);
 	}
 	
 	public Vivienda getVivienda (int cual)
@@ -95,34 +83,6 @@ public class Inmobiliaria {
 		this.nombre = nombre;
 	}
 	
-	public ArrayList<Visita> getVisitas() {
-		return visitas;
-	}
-
-	public void setVisitas(ArrayList<Visita> visitas) {
-		this.visitas = visitas;
-	}
-
-	public ArrayList<Cliente> getClientes() {
-		return clientes;
-	}
-
-	public void setClientes(ArrayList<Cliente> clientes) {
-		this.clientes = clientes;
-	}
-	
-	public int buscarCliente(String dni) {
-		int donde=-1;
-		
-		for (int i = 0; i < clientes.size()&&donde==-1; i++) {
-			if (clientes.get(i).getDni().equalsIgnoreCase(dni)) {
-				donde=clientes.indexOf(clientes.get(i));
-			}
-		}
-		
-		return donde;
-	}
-
 	public boolean insertarVivienda (Vivienda v)
 	{
 		boolean exito = false;
@@ -136,37 +96,18 @@ public class Inmobiliaria {
 		return exito;
 	}
 	
-	public boolean addCliente(Cliente c) {
-		boolean exito=false;
-		if (!clientes.contains(c)&&c!=null) {
-			clientes.add(c);
-			exito=true;
-		}
-		return exito;
-	}
-	
-	public boolean removeCliente(Cliente c) {
-		boolean exito=false;
-		if (clientes.contains(c)) {
-			clientes.remove(c);
-			exito=true;
-		}
-		return exito;
-	}
-	
-	public void mostrarClientes() {
-		for(Cliente c:clientes) {
-			System.out.println(c);
-		}
-	}
-	
 	public boolean eliminarVivienda (Direccion direccion)
 	{
+		ArrayList<Visita> visitasVivienda;
 		boolean exito = false;
 		Vivienda v = getVivienda (direccion);
 		
 		if (v != null)
 		{
+			// eliminar las visitas de la vivienda
+			visitasVivienda = getVisitasPorVivienda(v);
+			visitas.removeAll(visitasVivienda);
+			// eliminar la vivienda
 			viviendas.remove(v);
 			exito = true;
 		}
@@ -176,7 +117,131 @@ public class Inmobiliaria {
 
 	@Override
 	public String toString() {
-		return "Inmobiliaria [viviendas=" + viviendas + ", nombre=" + nombre + "]";
+		return "Inmobiliaria [viviendas=" + viviendas + ", clientes=" + clientes + ", visitas=" + visitas + ", nombre="
+				+ nombre + "]";
+	}
+
+
+	public ArrayList<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public ArrayList<Visita> getVisitas() {
+		return visitas;
+	}
+
+	public void setClientes(ArrayList<Cliente> clientes) {
+		this.clientes = clientes;
+	}
+
+	public void setVisitas(ArrayList<Visita> visitas) {
+		this.visitas = visitas;
+	}
+
+	public Cliente getCliente (String dni)
+	{
+		Cliente cliente = null;
+		int cual;
+		
+		cual = clientes.indexOf(new Cliente (dni));
+		
+		if (cual >= 0)
+			cliente = clientes.get(cual);
+		
+		return cliente;		
 	}
 	
+	public void setCliente (int cual, Cliente cliente)
+	{
+		if (!clientes.contains(cliente))
+		{
+			if (cual < 0)
+				cual = 0;
+			else if (cual > clientes.size() - 1)
+				cual = clientes.size() -1;
+
+			clientes.set(cual, cliente);
+		}
+	}
+	
+	public boolean insertarCliente (Cliente cliente)
+	{
+		boolean exito = false;
+		
+		if (!clientes.contains(cliente))
+		{
+			clientes.add(cliente);
+			exito = true;
+		}
+		
+		
+		return exito;
+	}
+	
+	public boolean eliminarCliente (String dni)
+	{
+		boolean exito = false;
+		Cliente cliente;
+		ArrayList<Visita> visitasCliente;
+		
+		
+		cliente = getCliente (dni);
+		
+		if (cliente != null)
+		{
+			// Borrado en cascada
+			// eliminar visitas antes
+			visitasCliente = getVisitasPorCliente (cliente);
+			visitas.removeAll(visitasCliente);
+			
+			// eliminar cliente
+			clientes.remove(cliente);
+			
+			exito = true;
+		}
+		
+		return exito;
+	}
+	
+	public ArrayList<Visita> getVisitasPorVivienda (Vivienda vivienda)
+	{
+		ArrayList<Visita> visitasVivienda = new ArrayList<>();
+		
+		if (vivienda != null)
+		{
+			for (Visita v : visitas)
+				if (v.getVivienda().equals(vivienda))
+					visitasVivienda.add(v);
+		}
+		
+		return visitasVivienda;
+	}
+	
+	public ArrayList<Visita> getVisitasPorCliente (Cliente cliente)
+	{
+		ArrayList<Visita> visitasCliente = new ArrayList<>();
+		
+		if (cliente != null)
+		{
+			for (Visita v : visitas)
+				if (v.getCliente().equals(cliente))
+					visitasCliente.add(v);
+		}
+		
+		return visitasCliente;
+	}
+	
+
+	public boolean insertarVisita (Visita visita)
+	{
+		boolean exito = false;
+		
+		if (!visitas.contains(visita))
+		{
+			visitas.add(visita);
+			exito = true;
+		}
+		
+		return exito;
+	}
 }

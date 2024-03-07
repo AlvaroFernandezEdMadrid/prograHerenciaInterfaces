@@ -1,6 +1,6 @@
 package inmobiliaria;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 
 import daw.com.Pantalla;
 import daw.com.Teclado;
@@ -19,11 +19,12 @@ public class AppInmobiliaria extends AppConMenu {
 		addOpcion("Mostrar Vivienda");
 		addOpcion("Mostrar Viviendas");
 		addOpcion("Insertar Cliente");
-		addOpcion("Mostrar todos los clientes");
-		addOpcion("Anotar Visita");
-		addOpcion("Mostrar visitas de un cliente");
+		addOpcion("Mostrar Clientes");
+		addOpcion("Insertar Visita");
+		addOpcion("Mostrar Visitas de un Cliente");
 		
-		// Crear objeto inmobiliaria
+		
+		// crear objeto inmobiliaria
 		
 		inmboliaria = new Inmobiliaria("dam1");
 	}
@@ -34,7 +35,7 @@ public class AppInmobiliaria extends AppConMenu {
 		// TODO Auto-generated method stub
 		AppInmobiliaria app = new AppInmobiliaria();
 		app.run();
-
+		
 	}
 	
 	
@@ -44,76 +45,124 @@ public class AppInmobiliaria extends AppConMenu {
 		switch (opc)
 		{
 			case 1:
-				altaVivienda();
+				altaVivienda ();
 				break;
 			case 2:
-				bajaVivienda();
+				bajaVivienda ();
 				break;
 			case 3:
-				mostrarVivienda();
+				mostrarVivienda ();
 				break;
 			case 4:
-				mostrarViviendas();
+				mostrarViviendas ();
 				break;
 			case 5:
-				annadirCliente();
+				insertarCliente ();
 				break;
 			case 6:
-				mostrarClientes();
+				mostrarClientes ();
 				break;
 			case 7:
-				anotarVisita();
+				insertarVisita ();
 				break;
 			case 8:
-				
+				mostrarVisitasPorCliente ();
 				break;
 			case 9:
 				salir ();
 		}
 	}
 	
-	private void anotarVisita() {
-		Cliente c;
-		Direccion d;
-		String impresion, dni;
-		Visita v;
-		//Comprobar que esta el cliente
-		dni=Teclado.leerString("DNI:");
-		c=new Cliente(dni);
+	public void mostrarVisitasPorCliente() {
+		// TODO Auto-generated method stub
+		String dni;
+		Cliente cliente;
+		ArrayList<Visita> visitasCliente;
 		
-		if (inmboliaria.getClientes().contains(c)) {
-			d=new Direccion();
-			d.leerDatos();
-			if (inmboliaria.getVivienda(d)!=null) {
-				impresion=Teclado.leerString("Cual fue tu impresion?:");
-				v=new Visita(LocalDate.now(), inmboliaria.getVivienda(d), impresion, inmboliaria.getClientes().get(inmboliaria.buscarCliente(dni)));
-				inmboliaria.getVisitas().add(v);
+		dni = Teclado.leerString("dni ");
+		
+		cliente = inmboliaria.getCliente(dni);
+		
+		if ( cliente != null)
+		{
+			visitasCliente = inmboliaria.getVisitasPorCliente(cliente);
+			if (!visitasCliente.isEmpty())
+			{
+				Pantalla.escribirString("\nListado de visitas del cliente " + cliente.getDni());
+				for (Visita visita : visitasCliente)
+				{
+					// filtrar las visitas 
+					if (visita.getVivienda().getPrecioFinal() < visita.getCliente().getCantidad())
+						Pantalla.escribirString("\n" + visita);
+				}
 			}
+			else
+				Pantalla.escribirString("\nEl cliente no tiene visitas");
 		}
+	}
+	
+	public void insertarVisita() {
+		// TODO Auto-generated method stub
+		String dni;
+		Direccion direccion;
+		Vivienda vivienda;
+		Cliente cliente;
+		Visita visita;
+		
+		dni = Teclado.leerString("dni ");
+		cliente = inmboliaria.getCliente(dni);
+		
+		if (cliente != null)
+		{
+			direccion = new Direccion ();
+			direccion.leerDatos();
+			vivienda = inmboliaria.getVivienda(direccion);
+			
+			if (vivienda != null)
+			{
+				visita = new Visita (vivienda, cliente);
+				visita.leerDatos();
+				inmboliaria.insertarVisita(visita);
+				Pantalla.escribirString("\nVisita registrada correctamente");
+			}
+			else
+				Pantalla.escribirString("\nNo existe la vivienda");
+		}
+		else
+			Pantalla.escribirString("\nNo existe el cliente");
 		
 		
 	}
+	
 
-	private void mostrarClientes() {
-		inmboliaria.mostrarClientes();
-	}
-
-	private void annadirCliente() {
-		Cliente c;
+	public void mostrarClientes() {
+		// TODO Auto-generated method stub
 		
-		c=new Cliente();
-		
-		do {
-			c.leerClave();
-		} while (inmboliaria.getClientes().contains(c));
-		c.leerOtrosDatos();
-		
-		inmboliaria.addCliente(c);
+		for (Cliente cliente : inmboliaria.getClientes())
+			Pantalla.escribirString("\n" + cliente);
 		
 	}
-
-
-
+	
+	public void insertarCliente() {
+		// TODO Auto-generated method stub
+		String dni;
+		Cliente cliente;
+		
+		dni = Teclado.leerString("dni ");
+		
+		cliente = new Cliente (dni);
+		
+		if (inmboliaria.getCliente(dni) == null)
+		{
+			cliente.leerOtrosDatos();
+			inmboliaria.insertarCliente(cliente);
+		}
+		else
+			Pantalla.escribirString("Cliente ya existe");
+		
+		
+	}
+	
 	public void mostrarViviendas() {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < inmboliaria.getNViviendas(); i++)
