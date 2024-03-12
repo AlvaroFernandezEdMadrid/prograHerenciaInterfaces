@@ -15,10 +15,7 @@ public class Desarrollo extends Producto {
 	}
 
 	public Desarrollo(String id) {
-		super(id);
-		this.lenguaje="";
-		this.lineas=0;
-		this.precioLinea=0f;
+		this(id,"","",0,0);
 	}
 	
 	public Desarrollo() {
@@ -68,6 +65,10 @@ public class Desarrollo extends Producto {
 		setLenguaje(Teclado.leerString("\nLenguaje: "));
 		setLineas(Teclado.leerInt("\nNumero de lineas: "));
 		setPrecioLinea(Teclado.leerFloat("\nPrecio/linea: "));
+	}
+	
+	public void mostrarDatos() {
+		System.out.println(this);
 	}
 	
 	@Override
