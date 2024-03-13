@@ -10,8 +10,12 @@ public class Alumno extends Persona {
 		setCurso(curso);
 	}
 	
+	public Alumno(String nombre, int edad) {
+		this(nombre, edad, "", 1);
+	}
+	
 	public Alumno() {
-		this("",0,"",1);
+		this("",0);
 	}
 	
 	public String getCarrera() {
