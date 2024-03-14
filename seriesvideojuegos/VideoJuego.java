@@ -2,24 +2,26 @@ package seriesvideojuegos;
 
 import java.util.Objects;
 
-public class Videojuego implements Entregable{
+import daw.com.Teclado;
+
+public class VideoJuego implements Entregable{
 	private String titulo;
-	private int horasEstimadas;
+	private float horasEstimadas;
 	private boolean entregado;
 	private String compania;
 	
-	public Videojuego(String titulo, int horasEstimadas, String compania) {
+	public VideoJuego(String titulo, int horasEstimadas, String compania) {
 		this.titulo = titulo;
 		this.horasEstimadas = horasEstimadas;
 		this.entregado = false;
 		this.compania = compania;
 	}
 	
-	public Videojuego(String titulo, int horasEstimadas) {
+	public VideoJuego(String titulo, int horasEstimadas) {
 		this(titulo, horasEstimadas, "");
 	}
 	
-	public Videojuego() {
+	public VideoJuego() {
 		this("", 10);
 	}
 
@@ -29,11 +31,11 @@ public class Videojuego implements Entregable{
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-	public int getHorasEstimadas() {
+	public float getHorasEstimadas() {
 		return horasEstimadas;
 	}
-	public void setHorasEstimadas(int horasEstimadas) {
-		this.horasEstimadas = horasEstimadas;
+	public void setHorasEstimadas(float f) {
+		this.horasEstimadas = f;
 	}
 	public String getCompania() {
 		return compania;
@@ -58,8 +60,15 @@ public class Videojuego implements Entregable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Videojuego other = (Videojuego) obj;
+		VideoJuego other = (VideoJuego) obj;
 		return Objects.equals(titulo, other.titulo);
+	}
+	
+	public void leerDatos ()
+	{
+		titulo = Teclado.leerString("Titulo");
+		setHorasEstimadas(Teclado.leerFloat("horas"));
+		setCompania(Teclado.leerString("Empresa"));
 	}
 
 	@Override

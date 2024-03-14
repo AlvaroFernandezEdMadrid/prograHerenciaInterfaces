@@ -8,15 +8,15 @@ public class AppSeriesJuegos {
 
 	public static void main(String[] args) {
 		ArrayList<Entregable> entregables=new ArrayList<Entregable>();
-		Comparator<Videojuego> comparadorPorNHoras;
+		Comparator<VideoJuego> comparadorPorNHoras;
 		Comparator<Serie> comparadorPorNTemporadas;
 		int entregados=0;
 		
-		Videojuego v1=new Videojuego("The Legend of Zelda:Ocarina of Time", 100, "Nintendo");
+		VideoJuego v1=new VideoJuego("The Legend of Zelda:Ocarina of Time", 100, "Nintendo");
 		Serie s1=new Serie("Breaking Bad",5,"Drama criminal","Vince Gilligan");
-		Videojuego v2=new Videojuego("Borderlands!: The Pre-Sequel", 200, "2K");
+		VideoJuego v2=new VideoJuego("Borderlands!: The Pre-Sequel", 200, "GearBox");
 		Serie s2=new Serie("JoJo's Bizarre Adventure",6,"Aventuras","Hirohiko Araki");
-		Videojuego v3=new Videojuego("Halo: Combat Evolved", 150, "Microsoft");
+		VideoJuego v3=new VideoJuego("Halo: Combat Evolved", 150, "Microsoft");
 		Serie s3=new Serie("Amar en tiempos revueltos",7,"Melodrama","Josep Maria Benet i Jornet");
 		
 		entregables.add(v1);
@@ -42,10 +42,10 @@ public class AppSeriesJuegos {
 				e.devolver();
 		
 		//Sacar videojuego con mas horas
-		comparadorPorNHoras=new Comparator<Videojuego>() {
+		comparadorPorNHoras=new Comparator<VideoJuego>() {
 			
 			@Override
-			public int compare(Videojuego o1, Videojuego o2) {
+			public int compare(VideoJuego o1, VideoJuego o2) {
 				int ret=-1;
 				if (o1.getHorasEstimadas()==o2.getHorasEstimadas()) {
 					ret=0;
@@ -57,7 +57,7 @@ public class AppSeriesJuegos {
 		
 		};
 		
-		Collections.max(entregables,comparadorPorNHoras);
+		
 		//Sacar serie con mas temporadas
 		
 		

@@ -2,13 +2,15 @@ package seriesvideojuegos;
 
 import java.util.Objects;
 
+import daw.com.Teclado;
+
 public class Serie implements Entregable{
 	private String titulo;
 	private int numTemporadas;
 	private boolean entregado;
 	private String genero;
 	private String creador;
-	
+
 	public Serie(String titulo, int numTemporadas, String genero, String creador) {
 		this.titulo = titulo;
 		setNumTemporadas(numTemporadas);
@@ -16,7 +18,7 @@ public class Serie implements Entregable{
 		this.creador = creador;
 		this.entregado=false;
 	}
-	
+
 	public Serie(String titulo, String creador) {
 		this(titulo,3,"",creador);
 	}
@@ -40,7 +42,7 @@ public class Serie implements Entregable{
 		}
 		this.numTemporadas = numTemporadas;
 	}
-	
+
 	public String getGenero() {
 		return genero;
 	}
@@ -62,7 +64,7 @@ public class Serie implements Entregable{
 				"\nGenero="+ genero +
 				"\nCreador=" + creador;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -73,6 +75,14 @@ public class Serie implements Entregable{
 			return false;
 		Serie other = (Serie) obj;
 		return Objects.equals(titulo, other.titulo);
+	}
+
+	public void leerDatos ()
+	{
+		titulo = Teclado.leerString("\nTitulo:");
+		setNumTemporadas(Teclado.leerInt("\nTemporadas:"));
+		setGenero(Teclado.leerString("\nGenero: "));
+		this.creador = Teclado.leerString("\nCreador:");
 	}
 
 	@Override
@@ -89,7 +99,7 @@ public class Serie implements Entregable{
 	public boolean isEntregado() {
 		return entregado;
 	}
-	
-	
-	
+
+
+
 }
