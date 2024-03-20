@@ -25,6 +25,12 @@ public class Television extends Electrodomestico {
 	public Television() {
 		this("");
 	}
+	
+	public Television(Television og) {
+		super(og);
+		this.resolucion=og.resolucion;
+		this.tdt=og.tdt;
+	}
 
 	public int getResolucion() {
 		return resolucion;

@@ -35,6 +35,15 @@ public abstract class Electrodomestico {
 	public Electrodomestico() {
 		this("");
 	}
+	
+	public Electrodomestico(Electrodomestico og) {
+		this.id=og.id;
+		this.stock=og.stock;
+		this.precio=og.precio;
+		this.color=og.color;
+		this.consumo=og.consumo;
+		this.peso=og.peso;
+	}
 
 	public String getId() {
 		return id;
@@ -53,8 +62,8 @@ public abstract class Electrodomestico {
 		return precio;
 	}
 	public void setPrecio(float precio) {
-		if (precio<0) {
-			precio=0;
+		if (precio<PRECIOBASE) {
+			precio=PRECIOBASE;
 		}
 		this.precio = precio;
 	}
@@ -74,6 +83,9 @@ public abstract class Electrodomestico {
 		return peso;
 	}
 	public void setPeso(float peso) {
+		if (peso<PESOBASE) {
+			peso=PESOBASE;
+		}
 		this.peso = peso;
 	}
 
