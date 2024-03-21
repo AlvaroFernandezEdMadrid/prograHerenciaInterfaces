@@ -34,9 +34,9 @@ public class AppTienda extends AppConMenu {
 		AppTienda app = new AppTienda();
 		
 		// cargar datos del teclado
-		//RedirigirTeclado.fromFile("electrodomesticos.in");
+		RedirigirTeclado.fromFile("electrodomesticos.in");
 		app.cargarDatos ();
-		//RedirigirTeclado.fromKeyboard();
+		RedirigirTeclado.fromKeyboard();
 		
 		// Ejecutar menú
 		app.run();
@@ -132,14 +132,25 @@ public class AppTienda extends AppConMenu {
 
 	public void actualizarStock(Cesta cesta) 
 	{
-		Electrodomestico e;
+		/*
+		 * Electrodomestico e;
+		 * 
+		 * for (LineaCesta linea : cesta.getLineas()) { e = linea.getE();
+		 * e.setStock(e.getStock() - linea.getCantidad()); }
+		 */
 		
-		for (LineaCesta linea : cesta.getLineas())
-		{
-			e = linea.getE();
-			e.setStock(e.getStock() - linea.getCantidad());
-		}
+		Consumer<LineaCesta> actualizarStock;
 		
+		actualizarStock = new Consumer<LineaCesta> ()
+				{
+					@Override
+					public void accept(LineaCesta t) {
+						// TODO Auto-generated method stub
+						t.getE().setStock(t.getE().getStock() - t.getCantidad());
+					}
+				};
+		
+		cesta.getLineas().forEach(actualizarStock);
 	}
 	
 	public void mostrarPedido(Cesta cesta) {
@@ -229,6 +240,8 @@ public class AppTienda extends AppConMenu {
 					tipo = Teclado.leerInt("1.Lavadora - 2. Televisor");
 				}while (tipo != 1 && tipo != 2);
 				
+				
+				// Patrón factoria abstracta
 				e = FactoriaElectrodomestico.
 						crearElectrodomestico(tipo);
 				
