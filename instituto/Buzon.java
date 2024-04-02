@@ -1,76 +1,62 @@
 package instituto;
 
+
 import java.util.ArrayList;
+import java.util.Comparator;
+
+import daw.com.Pantalla;
 
 public class Buzon {
-	private ArrayList<Mensaje> mensajes;
 	
-	public Buzon(ArrayList<Mensaje> mensajes) {
-		setMensajes(mensajes);
-	}
+	private ArrayList <Mensaje> buzon;
 
 	public Buzon() {
-		mensajes=new ArrayList<Mensaje>();
+		
+		buzon = new ArrayList<>();
 	}
 	
-	public Buzon(Buzon og) {
-		this.mensajes=og.mensajes;
-	}
-
-	public ArrayList<Mensaje> getMensajes() {
-		ArrayList<Mensaje> copia;
-		
-		copia=new ArrayList<Mensaje>(); //Composicion
-		
-		for (int i = 0; i < mensajes.size(); i++) {
-			copia.add(new Mensaje(mensajes.get(i)));
-		}
-		
-		return copia;
+	public void addMensaje (Mensaje mensaje)
+	{
+		buzon.add(mensaje);
 	}
 
-	public void setMensajes(ArrayList<Mensaje> mensajes) {
+
+	public void leerBuzon ()
+	{
+		Comparator<Mensaje> porFecha;
 		
-		if (mensajes!=null) {
-			for (int i = 0; i < mensajes.size(); i++) {
-				this.mensajes.add(new Mensaje(mensajes.get(i))); //Copia dura
+		if (buzon.isEmpty())
+			Pantalla.escribirString("\nNo hay mensajes en el buzón");
+		else
+		{
+			
+			// clase anónima
+			porFecha = new Comparator<Mensaje> ()
+				{
+
+					@Override
+					public int compare(Mensaje o1, Mensaje o2) {
+						// TODO Auto-generated method stub
+						return o1.getFecha().compareTo(o2.getFecha());
+					}
+				
+				};
+				
+			//Clase que implementa el interface
+			//Comparator<Mensaje> porFecha = new PorFecha ();	
+			buzon.sort(porFecha.reversed());// Collections.sort(buzon,porFecha);	
+			
+			while (!buzon.isEmpty())  
+			{
+				Mensaje m = buzon.remove(buzon.size() -1);
+			
+				Pantalla.escribirString("\n" + m.toString()); 
 			}
-		}else {
-			this.mensajes=new ArrayList<Mensaje>();
+			
 		}
 		
-		this.mensajes = mensajes;
-	}
-	
-	public boolean addMensaje() {
-		Mensaje mensaje;
-		boolean exito=false;
-		
-		mensaje=new Mensaje();
-		
-		mensaje.leerDatos();
-		
-		if (!mensajes.contains(mensaje)) {
-			mensajes.add(mensaje);
-			exito=true;
-		}	
-		
-		return exito;
-	}
-	
-	public boolean removeMensaje(int cual) {
-		boolean exito=false;
-		
-		if (mensajes!=null) {
-			if (mensajes.remove(cual)!= null) {
-				mensajes.remove(cual);
-				exito=true;
-			}
-		}
-		
-		return exito;
 	}
 	
 	
-	
+ 
 }

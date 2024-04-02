@@ -1,23 +1,37 @@
 package instituto;
 
 import java.util.ArrayList;
-
-import electrodomestico.Consumo;
+import java.util.List;
 
 public enum TipoEstudios {
-	ESO, BACHILLERATO, FPGMEDIO, FPGSUPERIOR;
+	ESO(4), BACHILLERATO(2), FPGM(2), FPGS(2);
 	
-	// Convertir enumeracion a un ArrayList de String
-	public static ArrayList<String> getValuesAsStringArrayList ()
+	private int cursos;
+	
+	private TipoEstudios (int cursos)
 	{
-		//String consumos[] = new String [Consumo.values().length];
-		ArrayList<String> consumos = new ArrayList<>();
-		Consumo consumoElec[] = Consumo.values();
-
-		for (int i = 0; i < consumoElec.length; i++)
-			consumos.add (consumoElec[i].name());
-
-
-		return consumos;
+		this.cursos = cursos;
+	}
+	
+	public int getCursos ()
+	{
+		return cursos;
+	}
+	
+	public static TipoEstudios toTipoEstudios (String tipo)
+	{
+		
+		TipoEstudios tipoEstudio; 
+		List<String> tipos = new ArrayList<>();
+		
+		tipo = tipo.toUpperCase();
+		
+		for (TipoEstudios t: TipoEstudios.values())
+			tipos.add(t.toString());
+		
+		tipoEstudio = tipos.contains(tipo)?
+				TipoEstudios.valueOf(tipo):
+					TipoEstudios.ESO;
+		return tipoEstudio;
 	}
 }
