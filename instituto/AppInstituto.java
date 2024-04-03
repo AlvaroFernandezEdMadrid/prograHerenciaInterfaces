@@ -8,7 +8,6 @@ import java.util.function.Consumer;
 
 import daw.com.Pantalla;
 import daw.com.Teclado;
-import institutosimple.RedirigirTeclado;
 
 public class AppInstituto extends AppConMenu {
 
